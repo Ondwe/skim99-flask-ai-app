@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeTutor - How to Run Python in HTML</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header styles */
+        header {
+            background: linear-gradient(135deg, #2c3e50 0%, #4a6491 100%);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            color: #64ffda;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 25px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #64ffda;
+        }
+        
+        .language-selector {
+            background: transparent;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        
+        /* Main content styles */
+        .main-content {
+            display: flex;
+            margin: 30px 0;
+            gap: 30px;
+        }
+        
+        .sidebar {
+            flex: 0 0 250px;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            align-self: flex-start;
+        }
+        
+        .sidebar h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #64ffda;
+        }
+        
+        .sidebar ul {
+            list-style: none;
+        }
+        
+        .sidebar li {
+            margin-bottom: 12px;
+        }
+        
+        .sidebar a {
+            color: #4a6491;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: color 0.3s;
+        }
+        
+        .sidebar a:hover {
+            color: #2c3e50;
+        }
+        
+        .sidebar i {
+            margin-right: 8px;
+            font-size: 14px;
+        }
+        
+        .article {
+            flex: 1;
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .article-header {
+            margin-bottom: 30px;
+        }
+        
+        .article-header h1 {
+            color: #2c3e50;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .article-meta {
+            display: flex;
+            align-items: center;
+            color: #6c757d;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        
+        .author {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+        
+        .author-img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #4a6491;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .date {
+            display: flex;
+            align-items: center;
+        }
+        
+        .date i {
+            margin-right: 5px;
+        }
+        
+        .content-section {
+            margin-bottom: 30px;
+        }
+        
+        .content-section h2 {
+            color: #2c3e50;
+            margin: 25px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        .content-section p {
+            margin-bottom: 15px;
+            color: #444;
+        }
+        
+        .code-block {
+            background: #2c3e50;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Consolas', monospace;
+        }
+        
+        .code-block code {
+            display: block;
+            line-height: 1.5;
+        }
+        
+        .code-comment {
+            color: #75715e;
+        }
+        
+        .code-keyword {
+            color: #f92672;
+        }
+        
+        .code-string {
+            color: #a6e22e;
+        }
+        
+        .code-function {
+            color: #66d9ef;
+        }
+        
+        .ad-container {
+            background: linear-gradient(135deg, #f5f7f9 0%, #e4e8eb 100%);
+            border-left: 4px solid #4a6491;
+            padding: 15px;
+            margin: 25px 0;
+            border-radius: 4px;
+        }
+        
+        .ad-container h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        /* Footer styles */
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+            color: #64ffda;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section a {
+            color: #c8d6e5;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: #64ffda;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #c8d6e5;
+            font-size: 14px;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 900px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                flex: 1;
+                margin-bottom: 20px;
+            }
+            
+            nav ul {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                color: white;
+                font-size: 24px;
+            }
+        }
+        
+        @media (min-width: 901px) {
+            .mobile-menu-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>CodeTutor</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Tutorials</a></li>
+                    <li><a href="#">HowTos</a></li>
+                    <li><a href="#">Reference</a></li>
+                    <li>
+                        <select class="language-selector">
+                            <option value="en">EN</option>
+                            <option value="es">ES</option>
+                            <option value="fr">FR</option>
+                            <option value="de">DE</option>
+                        </select>
+                    </li>
+                </ul>
+            </nav>
+            <div class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container main-content">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h3>Tutorials</h3>
+            <ul>
+                <li><a href="#"><i class="fas fa-code"></i> Python 3</a></li>
+                <li><a href="#"><i class="fas fa-window-restore"></i> Tkinter</a></li>
+                <li><a href="#"><i class="fas fa-cubes"></i> Python Modules</a></li>
+                <li><a href="#"><i class="fab fa-js"></i> JavaScript</a></li>
+                <li><a href="#"><i class="fas fa-chart-area"></i> Numpy</a></li>
+                <li><a href="#"><i class="fab fa-git-alt"></i> Git</a></li>
+                <li><a href="#"><i class="fas fa-chart-line"></i> Matplotlib</a></li>
+                <li><a href="#"><i class="fas fa-window-maximize"></i> PyQt5</a></li>
+                <li><a href="#"><i class="fas fa-sitemap"></i> Data Structure</a></li>
+                <li><a href="#"><i class="fas fa-project-diagram"></i> Algorithm</a></li>
+            </ul>
+            
+            <h3>HowTos</h3>
+            <ul>
+                <li><a href="#"><i class="fas fa-atom"></i> Python Scipy</a></li>
+                <li><a href="#"><i class="fab fa-python"></i> Python</a></li>
+                <li><a href="#"><i class="fas fa-tv"></i> Python Tkinter</a></li>
+                <li><a href="#"><i class="fas fa-terminal"></i> Batch</a></li>
+                <li><a href="#"><i class="fas fa-code"></i> PowerShell</a></li>
+            </ul>
+        </aside>
+
+        <!-- Article Content -->
+        <article class="article">
+            <div class="article-header">
+                <h1>How to Run Python in HTML</h1>
+                <div class="article-meta">
+                    <div class="author">
+                        <div class="author-img">V</div>
+                        <span>Vaibhav Vaibhav</span>
+                    </div>
+                    <div class="date">
+                        <i class="far fa-calendar-alt"></i>
+                        <span>Feb 02, 2024</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <p>Web Development is a vast field, and there are endless opportunities and things that we can do. With complexity and demand come requirements. When building dynamic web pages, we often have to perform tasks that require the assistance of some programming language such as Python or PHP.</p>
+                
+                <div class="ad-container">
+                    <h3>ADVERTISEMENT</h3>
+                    <p>Enhance your coding skills with our premium courses. Limited time offer!</p>
+                </div>
+
+                <p>In this article, we will learn how to run a Python script in HTML. We will talk about a few ways in which we can achieve this.</p>
+            </div>
+
+            <div class="content-section">
+                <h2>Run Python Scripts in HTML using PHP</h2>
+                <p>We can use PHP or Hypertext Preprocessor to run Python scripts in HTML. Refer following code depicts a simple example.</p>
+                
+                <p><strong>HTML File - index.html</strong></p>
+                <div class="code-block">
+                    <code>
+                        <span class="code-comment">&lt;!DOCTYPE html&gt;</span><br>
+                        <span class="code-keyword">&lt;html</span><span class="code-string">&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">&lt;head</span><span class="code-string">&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">&lt;title</span><span class="code-string">&gt;</span>Running a Python script<span class="code-keyword">&lt;/title&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">&lt;?PHP</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo shell_exec(<span class="code-string">"python script.py"</span>);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">?&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">&lt;/head&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">&lt;body</span><span class="code-string">&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">&lt;!-- BODY --&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">&lt;/body&gt;</span><br>
+                        <span class="code-keyword">&lt;/html&gt;</span>
+                    </code>
+                </div>
+
+                <p><strong>Python File - script.py</strong></p>
+                <div class="code-block">
+                    <code>
+                        a = <span class="code-number">2000</span><br>
+                        b = <span class="code-number">21</span><br>
+                        <span class="code-function">print</span>(<span class="code-string">f"a = {a}"</span>)<br>
+                        <span class="code-function">print</span>(<span class="code-string">f"b = {b}"</span>)<br>
+                        <span class="code-function">print</span>(<span class="code-string">f"a + b = {a + b}"</span>)
+                    </code>
+                </div>
+
+                <p>This will print the following in the console.</p>
+                
+                <div class="code-block">
+                    <code>
+                        a = <span class="code-number">2000</span><br>
+                        b = <span class="code-number">21</span><br>
+                        a + b = <span class="code-number">2021</span>
+                    </code>
+                </div>
+
+                <p>If we want to pass some values to the Python scripts, we can use the following code.</p>
+                
+                <p><strong>HTML File - index.html</strong></p>
+                <div class="code-block">
+                    <code>
+                        <span class="code-comment">&lt;!DOCTYPE html&gt;</span><br>
+                        <span class="code-keyword">&lt;html</span><span class="code-string">&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">&lt;head</span><span class="code-string">&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">&lt;title</span><span class="code-string">&gt;</span>Running a Python script<span class="code-keyword">&lt;/title&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">&lt;?PHP</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo shell_exec(<span class="code-string">"python script.py \"Parameter #1\" \"Parameter #2\""</span>);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">?&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">&lt;/head&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">&lt;body</span><span class="code-string">&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">&lt;!-- BODY --&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">&lt;/body&gt;</span><br>
+                        <span class="code-keyword">&lt;/html&gt;</span>
+                    </code>
+                </div>
+
+                <p>Now, the Python script will look as follows.</p>
+                
+                <p><strong>Python File - script.py</strong></p>
+                <div class="code-block">
+                    <code>
+                        <span class="code-keyword">import</span> sys<br><br>
+                        a = sys.argv[<span class="code-number">1</span>]<br>
+                        b = sys.argv[<span class="code-number">2</span>]<br>
+                        <span class="code-function">print</span>(<span class="code-string">f"a = {a}"</span>)<br>
+                        <span class="code-function">print</span>(<span class="code-string">f"b = {b}"</span>)<br>
+                        <span class="code-function">print</span>(<span class="code-string">f"a + b = {a + b}"</span>)
+                    </code>
+                </div>
+
+                <p>The output will remain the same, as shown above.</p>
+            </div>
+
+            <div class="content-section">
+                <h2>Run Python script in HTML using Django</h2>
+                <p>Django is a famous and robust Python-based web development framework. Since it is Python-based, it makes it easier to run Python scripts inside the HTML. The way we do this is by using template tags. Django has some pre-built template tags such as date, linebreaks, safe, random, etc. You can learn more about them <a href="#">here</a>.</p>
+                
+                <p>Since Django is very customizable, it offers developers an easy way to create their custom template tags. Using template tags, we can return data to HTML templates, which can be embedded inside the HTML template.</p>
+                
+                <p>Follow the following steps to create a simple template tag. We are assuming that we have a core application in our Django project.</p>
+                
+                <ol>
+                    <li>Create a new directory, templatetags, inside the core application. The app directory should look something like this.
+                        <div class="code-block">
+                            <code>
+                                core/<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;__init__.py<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;models.py<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;admin.py<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;views.py<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;urls.py<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;...<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;templatetags/<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__init__.py<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...
+                            </code>
+                        </div>
+                    </li>
+                    <li>Inside the templatetags folder, create a Python file named my_custom_tags.py.</li>
+                    <li>Inside this file, add the following code.
+                        <div class="code-block">
+                            <code>
+                                <span class="code-keyword">from</span> django <span class="code-keyword">import</span> template<br><br>
+                                register = template.Library()<br><br>
+                                @register.simple_tag<br>
+                                <span class="code-keyword">def</span> <span class="code-function">my_tag</span>():<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span> <span class="code-string">"Hello World from my_tag() custom template tag."</span>
+                            </code>
+                        </div>
+                    </li>
+                </ol>
+                
+                <p>my_custom_tags.py module will hold all the custom template tags. As shown in the code above, my_tag is a custom template tag that we just created and now it can be used inside any HTML template. This template tag will return "Hello World from my_tag() custom template tag." this string to the template. We can create even more template tags here to perform specific and common tasks.</p>
+                
+                <p>Now that we have created our first template tag, it is time to load it inside our HTML template and use it.</p>
+                
+                <div class="code-block">
+                    <code>
+                        {% load static %}<br>
+                        {% load my_custom_tags %}<br><br>
+                        <span class="code-comment">&lt;!DOCTYPE html&gt;</span><br>
+                        <span class="code-keyword">&lt;html</span> <span class="code-function">lang</span>=<span class="code-string">"en"</span> <span class="code-function">dir</span>=<span class="code-string">"ltr"</span><span class="code-string">&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">&lt;head</span><span class="code-string">&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">&lt;title</span><span class="code-string">&gt;</span>Intro<span class="code-keyword">&lt;/title&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">&lt;/head</span><span class="code-string">&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">&lt;body</span><span class="code-string">&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">&lt;p</span><span class="code-string">&gt;</span>{% my_tag %}<span class="code-keyword">&lt;/p&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">&lt;/body</span><span class="code-string">&gt;</span><br>
+                        <span class="code-keyword">&lt;/html&gt;</span>
+                    </code>
+                </div>
+                
+                <p>We first load the my_custom_tags.py module inside the template. Once the module is loaded, we can now use the template tags defined inside the my_custom_tags module. Note that it is important to first load a module with custom template tags before using those template tags.</p>
+                
+                <p>Instead of using a template tag, we can also create an end-point and make an AJAX request to that end-point to perform some task or get some data. We can use fetch() or jquery or any other available method to make an AJAX request. While making an end-point to handle an AJAX request, it is important to ensure that the end-point is secure and doesn't give easy access to sensitive data or website features. Since anyone can make AJAX requests if they know the end-point, we can add CSRF (Cross Site Request Forgery) validation to it and configure it to handle only POST requests. The POST data should contain the CSRF token.</p>
+                
+                <p>You can learn more about CSRF <a href="#">here</a>.</p>
+            </div>
+            
+            <div class="content-section">
+                <h3>Enjoying our tutorials?</h3>
+                <p>Subscribe to our YouTube channel to support us in creating more high-quality video guides.</p>
+                <button style="background: #4a6491; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">Subscribe</button>
+            </div>
+            
+            <div class="content-section">
+                <div class="author-info">
+                    <h3>Author: Vaibhav Vaibhav</h3>
+                    <p>Vaibhav is an artificial intelligence and cloud computing stan. He likes to build end-to-end full-stack web and mobile applications. Besides computer science and technology, he loves playing cricket and badminton, going on bike rides, and doodling.</p>
+                </div>
+            </div>
+        </article>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About Us</h3>
+                    <ul>
+                        <li><a href="#">Our Team</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Tutorials</a></li>
+                        <li><a href="#">HowTos</a></li>
+                        <li><a href="#">Reference</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <ul>
+                        <li><a href="#">YouTube</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>Copyright © 2025. All right reserved</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple code highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeBlocks = document.querySelectorAll('.code-block');
+            codeBlocks.forEach(block => {
+                const code = block.textContent;
+                // This is a simplified version - in reality you'd want a more robust highlighter
+                block.innerHTML = code.replace(/(&lt;\/?[a-z][a-z0-9]*\b[^&gt;]*&gt;)/gi, '<span class="code-keyword">$1</span>')
+                    .replace(/(".*?")/g, '<span class="code-string">$1</span>')
+                    .replace(/(\b\d+\b)/g, '<span class="code-number">$1</span>')
+                    .replace(/(&lt;!--.*?--&gt;)/g, '<span class="code-comment">$1</span>');
+            });
+        });
+    </script>
+</body>
+</html>
