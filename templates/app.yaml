@@ -1,0 +1,25 @@
+runtime: python310
+entrypoint: gunicorn -w 2 -b :$PORT main:app
+
+instance_class: F2
+
+env_variables:
+  PYTHONUNBUFFERED: "1"
+
+handlers:
+  - url: /.*
+    script: auto
+
+automatic_scaling:
+  min_instances: 1
+  max_instances: 3
+  target_cpu_utilization: 0.65
+  target_throughput_utilization: 0.65
+
+# Health check configuration
+health_check:
+  enable_health_check: True
+  check_interval_sec: 30
+  timeout_sec: 10
+  unhealthy_threshold: 2
+  healthy_threshold: 2
